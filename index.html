@@ -730,8 +730,8 @@ var modals = {
         <div>
           <p class="text-detail" style="margin-bottom:8px;">Will you attend?</p>
           <div class="attend-btns">
-            <button class="attend-btn" id="btnYes" onclick="selectAttend('yes')">Joyfully Yes</button>
-            <button class="attend-btn" id="btnNo" onclick="selectAttend('no')">Regretfully No</button>
+            <button class="attend-btn" id="btnYes" onclick="selectAttend('yes')">Yes</button>
+            <button class="attend-btn" id="btnNo" onclick="selectAttend('no')">No</button>
           </div>
         </div>
         <button class="rsvp-submit" onclick="submitRSVP()">Submit RSVP</button>
@@ -757,10 +757,17 @@ function submitRSVP() {
   var name = document.getElementById('rsvpName').value.trim();
   if (!name) { alert('Please enter your name.'); return; }
   if (!selectedAttend) { alert('Please select your attendance.'); return; }
-  // ★ TO SEND TO A BACKEND: add your fetch/POST call here ★
+
+  var attend = selectedAttend === 'yes' ? 'Yes' : 'No';
+  var url = 'https://docs.google.com/forms/d/e/1FAIpQLSfx4TOzZ7xdLZyoS0JWcjliQkKL5cnh76JQMqcIHPgdwJ9dJw/formResponse?entry.900267815=' + encodeURIComponent(name) + '&entry.1845237594=' + encodeURIComponent(attend) + '&submit=Submit';
+
+  fetch(url, { method: 'POST', mode: 'no-cors' })
+    .catch(function() {});
+
   document.getElementById('rsvpForm').style.display = 'none';
   document.getElementById('rsvpThanks').style.display = 'block';
 }
+
 
 function openModal(type) {
   var m = modals[type];
